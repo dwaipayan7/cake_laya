@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => CakeBloc(Repository()))
+        BlocProvider(create: (_) => CakeBloc(repository: Repository())..add(FetchInitialEvent()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
