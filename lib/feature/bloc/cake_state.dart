@@ -26,3 +26,5 @@ class CakeErrorState extends CakeState{
 }
 
 class NavigateToPackageDeliveryActionState extends CakeActionState{}
+
+class NavigateToPromotionActionState extends CakeActionState{}

@@ -15,7 +15,22 @@ class CakeBloc extends Bloc<CakeEvent, CakeState> {
 
   on<FetchInitialEvent>(fetchInitialEvent);
 
-  on<NavigateTo>(navigateTo);
+  on<NavigateToPromotion>(navigateToPromotion);
+  on<NavigateToPackage>(navigateToPackage);
+
+  }
+
+  FutureOr<void> navigateToPackage(NavigateToPackage event, Emitter<CakeState> emit) {
+
+    print("Navigate to Package");
+    emit(NavigateToPackageDeliveryActionState());
+
+  }
+
+  FutureOr<void> navigateToPromotion(NavigateToPromotion event, Emitter<CakeState> emit) {
+
+    print("Navigate to Promotion");
+    emit(NavigateToPromotionActionState());
 
   }
 
@@ -41,12 +56,4 @@ class CakeBloc extends Bloc<CakeEvent, CakeState> {
 
   }
 
-  Future<void> navigateTo(
-      NavigateTo event,
-      Emitter<CakeState> emit) async{
-
-    print("Navigate to");
-    emit(NavigateToPackageDeliveryActionState());
-
-  }
 }

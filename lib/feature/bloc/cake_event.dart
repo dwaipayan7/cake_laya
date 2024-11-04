@@ -5,4 +5,8 @@ sealed class CakeEvent {}
 
 class FetchInitialEvent extends CakeEvent{}
 
-class NavigateTo extends CakeEvent{}
+class NavigateToPackage extends CakeEvent{}
+
+class NavigateToPromotion extends CakeEvent{}
+
+

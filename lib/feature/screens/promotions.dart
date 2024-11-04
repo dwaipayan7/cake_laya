@@ -26,7 +26,7 @@ class PromotionsScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text("Add Image",style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orangeAccent,
+                  backgroundColor: Colors.red,
                 ),
               ),
             ),
