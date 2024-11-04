@@ -1,9 +1,10 @@
 import 'dart:io';
-
 import 'package:cake_laya/feature/bloc/cake_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../models/shop_model.dart';
 
 class ManageShopScreen extends StatefulWidget {
   const ManageShopScreen({super.key});
@@ -13,19 +14,6 @@ class ManageShopScreen extends StatefulWidget {
 }
 
 class _ManageShopScreenState extends State<ManageShopScreen> {
-  File? image;
-
-  Future<void> pickImage() async {
-    final pick = ImagePicker();
-    final pickedImage = await pick.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      setState(() {
-        image = File(pickedImage.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,38 +28,41 @@ class _ManageShopScreenState extends State<ManageShopScreen> {
         ),
       ),
       body: BlocConsumer<CakeBloc, CakeState>(
-          listener: (context, state) {
-            // Handle navigation or show dialogs based on different states, if needed.
-          },
-          builder: (context, state) {
-            if (state is CakeLoadingState) {
-              return const Center(child: CircularProgressIndicator.adaptive());
-            }
+        listener: (context, state) {
+          // Handle navigation or show dialogs based on different states, if needed.
+        },
+        builder: (context, state) {
+          if (state is CakeLoadingState) {
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
 
-            if (state is CakeLoadedSuccessState) {
-              final shop = state.shop;
+          if (state is CakeLoadedSuccessState) {
+            final shops = state.shop as List<ShopModel>;
 
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+            return ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: shops.length,
+              itemBuilder: (context, index) {
+                final shop = shops[index];
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Shop Name:", style: TextStyle(fontSize: 19)),
                     const SizedBox(height: 5),
-                    Text(shop.shopName, style: const TextStyle(color: Colors.grey, fontSize: 17)),
+                    Text(shop.shopName ?? 'N/A', style: const TextStyle(color: Colors.grey, fontSize: 17)),
                     const SizedBox(height: 10),
                     const Text("FSSAI License Number:", style: TextStyle(fontSize: 19)),
                     const SizedBox(height: 5),
-                    Text(shop.fssaiLicense, style: const TextStyle(color: Colors.grey, fontSize: 17)),
+                    Text(shop.fssaiLicense ?? 'N/A', style: const TextStyle(color: Colors.grey, fontSize: 17)),
                     const SizedBox(height: 10),
                     const Text("Commission %:", style: TextStyle(fontSize: 19)),
                     const SizedBox(height: 5),
-                    Text(shop.commission.toString(), style: const TextStyle(color: Colors.grey, fontSize: 17)),
+                    Text("${shop.commission}", style: const TextStyle(color: Colors.grey, fontSize: 17)),
                     const SizedBox(height: 20),
                     const Text("Add Shop Display Photo (Max 1):", style: TextStyle(fontSize: 19)),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: pickImage,
+                      onPressed: (){},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
@@ -83,7 +74,9 @@ class _ManageShopScreenState extends State<ManageShopScreen> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Navigate to Packaging & Delivery Screen
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -110,13 +103,15 @@ class _ManageShopScreenState extends State<ManageShopScreen> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Navigate to Promotions Screen
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        minimumSize: const Size(double.infinity, 45),
+                        minimumSize: const Size(double.infinity, 45 ),
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -160,19 +155,21 @@ class _ManageShopScreenState extends State<ManageShopScreen> {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    const Divider(height: 40, thickness: 1),
                   ],
-                ),
-              );
-            }
+                );
+              },
+            );
+          }
 
-            if (state is CakeErrorState) {
-              return Center(child: Text(state.message, style: const TextStyle(color: Colors.red, fontSize: 18)));
-            }
+          if (state is CakeErrorState) {
+            return Center(child: Text(state.message, style: const TextStyle(color: Colors.red, fontSize: 18)));
+          }
 
-            return const SizedBox.shrink();
-          },
-        ),
-      );
+          return const SizedBox.shrink();
+        },
+      ),
+    );
   }
 }

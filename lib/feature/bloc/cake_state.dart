@@ -11,7 +11,7 @@ class CakeLoadingState extends CakeState{}
 
 class CakeLoadedSuccessState extends CakeState{
 
-  final ShopModel shop;
+  final List<ShopModel> shop;
 
   CakeLoadedSuccessState({required this.shop});
 
