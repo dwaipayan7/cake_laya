@@ -1,14 +1,38 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class PromotionsScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class PromotionsScreen extends StatefulWidget {
+  @override
+  State<PromotionsScreen> createState() => _PromotionsScreenState();
+}
+
+class _PromotionsScreenState extends State<PromotionsScreen> {
   @override
   Widget build(BuildContext context) {
+
+    File? image;
+
+    Future<void> pickImage() async {
+      final picker = ImagePicker();
+      final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        setState(() {
+          image = File(pickedImage.path);
+        });
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("PROMOTIONS"),
         centerTitle: true,
         leading: IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pop(context);
+            },
             icon: Icon(Icons.arrow_back_ios, color: Colors.grey,)
         ),
         iconTheme: IconThemeData(
@@ -23,7 +47,7 @@ class PromotionsScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: pickImage,
                 child: Text("Add Image",style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,

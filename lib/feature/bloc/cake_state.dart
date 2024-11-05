@@ -9,6 +9,14 @@ abstract class CakeActionState extends CakeState{}
 
 class CakeLoadingState extends CakeState{}
 
+class CakeSavingState extends CakeState{}
+
+class CakeSaveSuccessState extends CakeState{
+  final DeliverySettings deliveryData;
+
+  CakeSaveSuccessState({required this.deliveryData});
+}
+
 class CakeLoadedSuccessState extends CakeState{
 
   final List<ShopModel> shop;

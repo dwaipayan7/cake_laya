@@ -16,6 +16,7 @@ class CakeBloc extends Bloc<CakeEvent, CakeState> {
     on<FetchInitialEvent>(fetchInitialEvent);
     on<NavigateToPromotion>(navigateToPromotion);
     on<NavigateToPackage>(navigateToPackage);
+    on<SaveDeliveryDataEvent>(saveDeliveryDataEvent);
   }
 
   FutureOr<void> navigateToPackage(
@@ -35,11 +36,27 @@ class CakeBloc extends Bloc<CakeEvent, CakeState> {
     emit(CakeLoadingState());
 
     try {
-      // Fetch the shop data from the repository
       final shop = await repository.fetchShopData();
       emit(CakeLoadedSuccessState(shop: shop));
     } catch (e) {
       emit(CakeErrorState(message: e.toString()));
     }
+  }
+
+  Future<void> saveDeliveryDataEvent(
+      SaveDeliveryDataEvent event,
+      Emitter<CakeState> emit) async{
+
+    emit(CakeSavingState());
+
+    try{
+
+     final deliveryData = await repository.postDeliveryData(event.deliveryData);
+     emit(CakeSaveSuccessState(deliveryData: deliveryData));
+
+    }catch(e){
+        emit(CakeErrorState(message: e.toString()));
+    }
+
   }
 }
